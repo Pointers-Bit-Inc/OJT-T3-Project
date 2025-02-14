@@ -10,32 +10,32 @@ export default function Dashboard() {
   const [active, setActive] = useState("dashboard");
 
   const handleLogout = () => {
-    router.push("/auth"); 
+    router.push("/auth/loginform"); // ✅ Redirect to login
   };
 
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-md p-6">
-        <h2 className="text-xl font-bold text-gray-700 mb-6">Menu</h2>
+      <aside className="w-64 bg-white p-6 shadow-md">
+        <h2 className="mb-6 text-xl font-bold text-gray-700">Menu</h2>
         <nav className="flex flex-col space-y-4">
           <Link
             href="/dashboard"
-            className={`p-3 rounded-md ${active === "dashboard" ? "bg-blue-600 text-white" : "text-gray-700"}`}
+            className={`rounded-md p-3 ${active === "dashboard" ? "bg-blue-600 text-white" : "text-gray-700"}`}
             onClick={() => setActive("dashboard")}
           >
             Dashboard
           </Link>
           <Link
-            href="/dashboard/product"
-            className={`p-3 rounded-md ${active === "products" ? "bg-blue-600 text-white" : "text-gray-700"}`}
-            onClick={() => setActive("product")}
+            href="/dashboard/products"
+            className={`rounded-md p-3 ${active === "products" ? "bg-blue-600 text-white" : "text-gray-700"}`}
+            onClick={() => setActive("products")}
           >
             Products
           </Link>
           <Link
             href="/dashboard/report"
-            className={`p-3 rounded-md ${active === "report" ? "bg-blue-600 text-white" : "text-gray-700"}`}
+            className={`rounded-md p-3 ${active === "report" ? "bg-blue-600 text-white" : "text-gray-700"}`}
             onClick={() => setActive("report")}
           >
             Report
@@ -44,11 +44,11 @@ export default function Dashboard() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6 relative">
+      <main className="relative flex-1 p-6">
         {/* Logout Button (Top Right) */}
         <button
           onClick={handleLogout}
-          className="absolute top-4 right-6 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+          className="absolute right-6 top-4 rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700"
         >
           Logout
         </button>
