@@ -13,7 +13,7 @@ export default function HomePage() {
         </h1>
         <button
           className="rounded-xl bg-blue-600 px-6 py-3 text-lg text-white hover:bg-blue-700"
-          onClick={() => router.push("/auth/loginform")} // ✅ Corrected path
+          onClick={() => router.push("/auth")}
         >
           Get Started
         </button>
