@@ -12,7 +12,7 @@ export default function HomePage() {
           Welcome to <span className="text-blue-600">JTechSpofy</span>
         </h1>
         <button
-          className="bg-blue-600 text-white px-6 py-3 rounded-xl text-lg hover:bg-blue-700"
+          className="rounded-xl bg-blue-600 px-6 py-3 text-lg text-white hover:bg-blue-700"
           onClick={() => router.push("/auth/loginform")} // ✅ Corrected path
         >
           Get Started
