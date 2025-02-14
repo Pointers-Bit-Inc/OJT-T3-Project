@@ -8,9 +8,9 @@ import { Button } from "~/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
 import { Menu, Package, LayoutDashboard, BarChart } from "lucide-react";
 
-export default function Dashboard() {
+export default function Product() {
   const router = useRouter();
-  const [active, setActive] = useState("dashboard");
+  const [active, setActive] = useState("products");
 
   const handleLogout = () => {
     router.push("/auth");
@@ -88,11 +88,11 @@ export default function Dashboard() {
           Logout
         </Button>
 
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="mt-4 text-gray-700">Welcome to the admin dashboard.</p>
+        <h1 className="text-3xl font-bold">Products</h1>
+        <p className="mt-4 text-gray-700">Manage your products here.</p>
         <Card className="mt-6 p-6 shadow-md">
-          <h2 className="text-lg font-bold">Card Component</h2>
-          <p className="text-gray-600 mt-2">This is a sample card using shadcn/ui.</p>
+          <h2 className="text-lg font-bold">Product List</h2>
+          <p className="text-gray-600 mt-2">This is where the product list will appear.</p>
         </Card>
       </main>
     </div>
