@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Card } from "~/components/ui/card";
 
 export default function Dashboard() {
   const router = useRouter();
   const [active, setActive] = useState("dashboard");
 
   const handleLogout = () => {
-    router.push("/auth/loginform"); // ✅ Redirect to login
+    router.push("/auth"); 
   };
 
   return (
@@ -26,9 +27,9 @@ export default function Dashboard() {
             Dashboard
           </Link>
           <Link
-            href="/dashboard/products"
+            href="/dashboard/product"
             className={`p-3 rounded-md ${active === "products" ? "bg-blue-600 text-white" : "text-gray-700"}`}
-            onClick={() => setActive("products")}
+            onClick={() => setActive("product")}
           >
             Products
           </Link>
@@ -54,6 +55,7 @@ export default function Dashboard() {
 
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <p className="mt-4 text-gray-700">Welcome to the admin dashboard.</p>
+        <Card />
       </main>
     </div>
   );
