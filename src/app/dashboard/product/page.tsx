@@ -7,8 +7,25 @@ import { Card } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
 import { Menu, Package, LayoutDashboard, BarChart } from "lucide-react";
+import { Table } from "~/components/ui/table";
+import { DataTable } from "~/app/payments/data-table";
+import { Payment, columns } from "~/app/payments/columns";
 
+async function getData(): Promise<Payment[]> {
+  // Fetch data from your API here.
+  return [
+    {
+      id: "728ed52f",
+      amount: 100,
+      status: "pending",
+      email: "m@example.com",
+    },
+    // ...
+  ];
+}
 export default function Product() {
+  const data = getData();
+
   const router = useRouter();
   const [active, setActive] = useState("products");
 
@@ -19,8 +36,8 @@ export default function Product() {
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar (Desktop) */}
-      <aside className="hidden md:flex w-64 bg-white shadow-md p-6 flex-col">
-        <h2 className="text-xl font-bold text-gray-700 mb-6">JTechSpofy</h2>
+      <aside className="hidden w-64 flex-col bg-white p-6 shadow-md md:flex">
+        <h2 className="mb-6 text-xl font-bold text-gray-700">JTechSpofy</h2>
         <nav className="flex flex-col space-y-2">
           {[
             { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -30,14 +47,14 @@ export default function Product() {
             <Link
               key={item.name}
               href={item.href}
-              className={`flex items-center p-3 rounded-md ${
+              className={`flex items-center rounded-md p-3 ${
                 active === item.name.toLowerCase()
                   ? "bg-blue-600 text-white"
                   : "text-gray-700 hover:bg-gray-200"
               }`}
               onClick={() => setActive(item.name.toLowerCase())}
             >
-              <item.icon className="w-5 h-5 mr-3" />
+              <item.icon className="mr-3 h-5 w-5" />
               {item.name}
             </Link>
           ))}
@@ -47,12 +64,12 @@ export default function Product() {
       {/* Sidebar (Mobile) */}
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="ghost" className="md:hidden absolute top-4 left-4">
+          <Button variant="ghost" className="absolute left-4 top-4 md:hidden">
             <Menu className="h-6 w-6" />
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="w-64 bg-white p-6">
-          <h2 className="text-xl font-bold text-gray-700 mb-6">Menu</h2>
+          <h2 className="mb-6 text-xl font-bold text-gray-700">Menu</h2>
           <nav className="flex flex-col space-y-2">
             {[
               { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -62,14 +79,14 @@ export default function Product() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center p-3 rounded-md ${
+                className={`flex items-center rounded-md p-3 ${
                   active === item.name.toLowerCase()
                     ? "bg-blue-600 text-white"
                     : "text-gray-700 hover:bg-gray-200"
                 }`}
                 onClick={() => setActive(item.name.toLowerCase())}
               >
-                <item.icon className="w-5 h-5 mr-3" />
+                <item.icon className="mr-3 h-5 w-5" />
                 {item.name}
               </Link>
             ))}
@@ -78,22 +95,25 @@ export default function Product() {
       </Sheet>
 
       {/* Main Content */}
-      <main className="flex-1 p-6 relative">
+      <main className="relative flex-1 p-6">
         {/* Logout Button */}
         <Button
           onClick={handleLogout}
           variant="destructive"
-          className="absolute top-4 right-6"
+          className="absolute right-6 top-4"
         >
           Logout
         </Button>
 
         <h1 className="text-3xl font-bold">Products</h1>
         <p className="mt-4 text-gray-700">Manage your products here.</p>
-        <Card className="mt-6 p-6 shadow-md">
+        {/* <Card className="mt-6 p-6 shadow-md">
           <h2 className="text-lg font-bold">Product List</h2>
-          <p className="text-gray-600 mt-2">This is where the product list will appear.</p>
-        </Card>
+          <p className="mt-2 text-gray-600">
+            This is where the product list will appear.
+          </p>
+        </Card> */}
+        <DataTable columns={columns} data={data} />
       </main>
     </div>
   );
