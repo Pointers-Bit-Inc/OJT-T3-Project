@@ -32,6 +32,20 @@ export const postRouter = createTRPCRouter({
     return ctx.db.post.findMany();
   }),
 
+  search: publicProcedure
+    .input(z.object({ query: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.post.findMany({
+        where: {
+          name: {
+            contains: input.query, // Partial match search
+            mode: "insensitive", // Case insensitive
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      });
+    }),
+
   update: publicProcedure
     .input(z.object({ id: z.number(), name: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {

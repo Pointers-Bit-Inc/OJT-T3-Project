@@ -11,6 +11,11 @@ export function LatestPost() {
   const [name, setName] = useState("");
   const [editMode, setEditMode] = useState<number | null>(null);
   const [editName, setEditName] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const { data: searchResults } = api.post.search.useQuery(
+    { query: searchQuery },
+    { enabled: !!searchQuery }, // Only run when query is not empty
+  );
 
   const createPost = api.post.create.useMutation({
     onSuccess: async () => {
@@ -127,6 +132,31 @@ export function LatestPost() {
             ))
           ) : (
             <p>No reports found.</p>
+          )}
+        </ul>
+      </div>
+      <input
+        type="text"
+        placeholder="Search reports..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="w-full rounded border px-4 py-2 text-black"
+      />
+
+      {/* DISPLAY SEARCH RESULTS */}
+      <div className="mt-6">
+        <h3 className="text-lg font-semibold">Search Results:</h3>
+        <ul className="mt-2">
+          {searchQuery && searchResults?.length ? (
+            searchResults.map((post) => (
+              <li key={post.id} className="text-black-300 truncate">
+                {post.name}
+              </li>
+            ))
+          ) : searchQuery ? (
+            <p>No results found.</p>
+          ) : (
+            <p>Type to search...</p>
           )}
         </ul>
       </div>
