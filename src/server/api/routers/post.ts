@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const postRouter = createTRPCRouter({
@@ -28,4 +27,16 @@ export const postRouter = createTRPCRouter({
 
     return post ?? null;
   }),
+
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    return ctx.db.post.findMany();
+  }),
+
+  delete: publicProcedure
+    .input(z.object({ id: z.number() })) // Expect an integer instead of a string
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.post.delete({
+        where: { id: input.id },
+      });
+    }),
 });
