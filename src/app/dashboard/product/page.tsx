@@ -33,17 +33,19 @@ export default function Product() {
     router.push("/auth");
   };
 
+  const menuItems = [
+    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+    { name: "Products", href: "/dashboard/product", icon: Package },
+    { name: "Report", href: "/dashboard/report", icon: BarChart },
+  ];
+
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar (Desktop) */}
       <aside className="hidden w-64 flex-col bg-white p-6 shadow-md md:flex">
-        <h2 className="mb-6 text-xl font-bold text-gray-700">JTechSpofy</h2>
+        <h2 className="mb-6 text-xl font-bold text-gray-700">JTechShofy</h2>
         <nav className="flex flex-col space-y-2">
-          {[
-            { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-            { name: "Products", href: "/dashboard/product", icon: Package },
-            { name: "Report", href: "/dashboard/report", icon: BarChart },
-          ].map((item) => (
+          {menuItems.map((item) => (
             <Link
               key={item.name}
               href={item.href}
@@ -61,59 +63,62 @@ export default function Product() {
         </nav>
       </aside>
 
-      {/* Sidebar (Mobile) */}
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="ghost" className="absolute left-4 top-4 md:hidden">
-            <Menu className="h-6 w-6" />
+      {/* Main Content Area */}
+      <main className="relative flex-1 p-6 md:p-8">
+        {/* Header with Menu Button and Logout Button */}
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            {/* Mobile Menu Button */}
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" className="md:hidden">
+                  <Menu className="h-6 w-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-64 bg-white p-6 shadow-lg">
+                <h2 className="mb-6 text-xl font-bold text-gray-700">
+                  JTechShofy
+                </h2>
+                <nav className="flex flex-col space-y-2">
+                  {menuItems.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className={`flex items-center rounded-md p-3 ${
+                        active === item.name.toLowerCase()
+                          ? "bg-blue-600 text-white"
+                          : "text-gray-700 hover:bg-gray-200"
+                      }`}
+                      onClick={() => setActive(item.name.toLowerCase())}
+                    >
+                      <item.icon className="mr-3 h-5 w-5" />
+                      {item.name}
+                    </Link>
+                  ))}
+                </nav>
+              </SheetContent>
+            </Sheet>
+
+            {/* Page Title */}
+            <h1 className="text-3xl font-bold">Products</h1>
+          </div>
+
+          {/* Logout Button */}
+          <Button onClick={handleLogout} variant="destructive">
+            Logout
           </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="w-64 bg-white p-6">
-          <h2 className="mb-6 text-xl font-bold text-gray-700">Menu</h2>
-          <nav className="flex flex-col space-y-2">
-            {[
-              { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-              { name: "Products", href: "/dashboard/product", icon: Package },
-              { name: "Report", href: "/dashboard/report", icon: BarChart },
-            ].map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`flex items-center rounded-md p-3 ${
-                  active === item.name.toLowerCase()
-                    ? "bg-blue-600 text-white"
-                    : "text-gray-700 hover:bg-gray-200"
-                }`}
-                onClick={() => setActive(item.name.toLowerCase())}
-              >
-                <item.icon className="mr-3 h-5 w-5" />
-                {item.name}
-              </Link>
-            ))}
-          </nav>
-        </SheetContent>
-      </Sheet>
+        </div>
 
-      {/* Main Content */}
-      <main className="relative flex-1 p-6">
-        {/* Logout Button */}
-        <Button
-          onClick={handleLogout}
-          variant="destructive"
-          className="absolute right-6 top-4"
-        >
-          Logout
-        </Button>
+        {/* Welcome Text */}
+        <p className="text-gray-700">Manage your products here.</p>
 
-        <h1 className="text-3xl font-bold">Products</h1>
-        <p className="mt-4 text-gray-700">Manage your products here.</p>
-        {/* <Card className="mt-6 p-6 shadow-md">
+        {/* Sample Card */}
+        <Card className="mt-6 p-6 shadow-md">
           <h2 className="text-lg font-bold">Product List</h2>
           <p className="mt-2 text-gray-600">
             This is where the product list will appear.
           </p>
-        </Card> */}
-        <DataTable columns={columns} data={data} />
+        </Card>
       </main>
     </div>
   );

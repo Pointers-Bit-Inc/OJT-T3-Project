@@ -11,7 +11,7 @@ export default function AuthPage() {
   return (
     <main className="flex min-h-screen">
       <div className="w-1/2 flex items-center justify-center bg-blue-600">
-        <h1 className="text-4xl font-bold text-white">Welcome to JTechSpofy</h1>
+        <h1 className="text-4xl font-bold text-white">Welcome to JTechShofy</h1>
         
       </div>
 
