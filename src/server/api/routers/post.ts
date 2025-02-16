@@ -32,6 +32,15 @@ export const postRouter = createTRPCRouter({
     return ctx.db.post.findMany();
   }),
 
+  update: publicProcedure
+    .input(z.object({ id: z.number(), name: z.string().min(1) }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.post.update({
+        where: { id: input.id },
+        data: { name: input.name },
+      });
+    }),
+
   delete: publicProcedure
     .input(z.object({ id: z.number() })) // Expect an integer instead of a string
     .mutation(async ({ ctx, input }) => {

@@ -9,6 +9,8 @@ export function LatestPost() {
 
   const utils = api.useUtils();
   const [name, setName] = useState("");
+  const [editMode, setEditMode] = useState<number | null>(null);
+  const [editName, setEditName] = useState("");
 
   const createPost = api.post.create.useMutation({
     onSuccess: async () => {
@@ -21,6 +23,14 @@ export function LatestPost() {
   const deletePost = api.post.delete.useMutation({
     onSuccess: async () => {
       await utils.post.invalidate();
+    },
+  });
+
+  // UPDATE POST MUTATION
+  const updatePost = api.post.update.useMutation({
+    onSuccess: async () => {
+      await utils.post.invalidate();
+      setEditMode(null); // Exit edit mode after update
     },
   });
 
@@ -66,14 +76,53 @@ export function LatestPost() {
                 key={post.id}
                 className="text-black-300 flex items-center justify-between truncate"
               >
-                <span>{post.name}</span>
-                <button
-                  onClick={() => deletePost.mutate({ id: post.id })}
-                  className="ml-4 text-red-500 hover:text-red-700"
-                  disabled={deletePost.isPending}
-                >
-                  {deletePost.isPending ? "Deleting..." : "❌"}
-                </button>
+                {editMode === post.id ? (
+                  // EDIT MODE: Show input field
+                  <input
+                    type="text"
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    className="rounded border px-2 py-1 text-black"
+                  />
+                ) : (
+                  // NORMAL MODE: Show post name
+                  <span>{post.name}</span>
+                )}
+
+                <div className="flex gap-2">
+                  {editMode === post.id ? (
+                    // SHOW SAVE BUTTON IN EDIT MODE
+                    <button
+                      onClick={() =>
+                        updatePost.mutate({ id: post.id, name: editName })
+                      }
+                      className="text-blue-500 hover:text-blue-700"
+                      disabled={updatePost.isPending}
+                    >
+                      {updatePost.isPending ? "Saving..." : "💾"}
+                    </button>
+                  ) : (
+                    // SHOW EDIT BUTTON IN NORMAL MODE
+                    <button
+                      onClick={() => {
+                        setEditMode(post.id);
+                        setEditName(post.name);
+                      }}
+                      className="text-yellow-500 hover:text-yellow-700"
+                    >
+                      ✏️
+                    </button>
+                  )}
+
+                  {/* DELETE BUTTON */}
+                  <button
+                    onClick={() => deletePost.mutate({ id: post.id })}
+                    className="text-red-500 hover:text-red-700"
+                    disabled={deletePost.isPending}
+                  >
+                    {deletePost.isPending ? "Deleting..." : "❌"}
+                  </button>
+                </div>
               </li>
             ))
           ) : (
