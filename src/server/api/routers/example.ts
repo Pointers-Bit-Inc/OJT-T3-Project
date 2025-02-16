@@ -5,7 +5,6 @@ const idSchema = z.object({ id: z.string() });
 
 const productSchema = z.object({
   name: z.string(),
-  email: z.string(),
   category: z.string(),
   price: z.number(),
   quantity: z.number(),
@@ -15,7 +14,6 @@ const productSchema = z.object({
 const producUpdateSchema = z.object({
   id: z.string(),
   name: z.string(),
-  email: z.string(),
   category: z.string(),
   price: z.number(),
   quantity: z.number(),

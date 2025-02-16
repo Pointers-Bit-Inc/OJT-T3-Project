@@ -7,8 +7,25 @@ import { Card } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
 import { Menu, Package, LayoutDashboard, BarChart } from "lucide-react";
+import { Table } from "~/components/ui/table";
+import { DataTable } from "~/app/payments/data-table";
+import { Payment, columns } from "~/app/payments/columns";
 
+async function getData(): Promise<Payment[]> {
+  // Fetch data from your API here.
+  return [
+    {
+      id: "728ed52f",
+      amount: 100,
+      status: "pending",
+      email: "m@example.com",
+    },
+    // ...
+  ];
+}
 export default function Product() {
+  const data = getData();
+
   const router = useRouter();
   const [active, setActive] = useState("products");
 
@@ -25,7 +42,7 @@ export default function Product() {
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar (Desktop) */}
-      <aside className="hidden md:flex w-64 flex-col bg-white p-6 shadow-md">
+      <aside className="hidden w-64 flex-col bg-white p-6 shadow-md md:flex">
         <h2 className="mb-6 text-xl font-bold text-gray-700">JTechShofy</h2>
         <nav className="flex flex-col space-y-2">
           {menuItems.map((item) => (
@@ -49,7 +66,7 @@ export default function Product() {
       {/* Main Content Area */}
       <main className="relative flex-1 p-6 md:p-8">
         {/* Header with Menu Button and Logout Button */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             {/* Mobile Menu Button */}
             <Sheet>
@@ -59,7 +76,9 @@ export default function Product() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-64 bg-white p-6 shadow-lg">
-                <h2 className="mb-6 text-xl font-bold text-gray-700">JTechShofy</h2>
+                <h2 className="mb-6 text-xl font-bold text-gray-700">
+                  JTechShofy
+                </h2>
                 <nav className="flex flex-col space-y-2">
                   {menuItems.map((item) => (
                     <Link
