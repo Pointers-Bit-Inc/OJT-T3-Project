@@ -225,11 +225,11 @@ export const NewProductManagement = () => {
                     setEditData(product);
                     setIsModalOpen(true);
                   }}
-                  className="border border-blue-500 bg-blue-100 text-blue-500 hover:bg-blue-200"
+                  className="border border-yellow-500 bg-yellow-100 p-1 text-yellow-500 hover:bg-yellow-200"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="mr-2 h-5 w-5"
+                    className="h-3 w-3"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -239,16 +239,16 @@ export const NewProductManagement = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  Edit
                 </Button>
+
                 <Button
-                  variant="destructive"
+                  variant="ghost"
                   onClick={() => deleteProduct.mutate({ id: product.id })}
-                  className="border border-red-500 bg-red-100 text-red-500 hover:bg-red-200"
+                  className="border border-red-500 bg-red-100 p-1 text-red-500 hover:bg-red-200"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="mr-2 h-5 w-5"
+                    className="h-3 w-3"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -258,7 +258,6 @@ export const NewProductManagement = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  Delete
                 </Button>
               </TableCell>
             </TableRow>
