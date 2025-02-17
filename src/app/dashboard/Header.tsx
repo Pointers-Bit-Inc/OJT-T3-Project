@@ -16,14 +16,14 @@ export default function Header() {
   const pathname = usePathname();
 
   const handleLogout = () => {
-    setSidebarOpen(false); // Close sidebar on mobile
+    setSidebarOpen(false); 
     router.push("/auth"); 
   };
 
   const navItems = [
     { name: "Dashboard", href: "/dashboard" },
     { name: "Products", href: "/dashboard/product" },
-    { name: "Reports", href: "/reports" },
+    { name: "Reports", href: "/dashboard/report" },
   ];
 
   return (
