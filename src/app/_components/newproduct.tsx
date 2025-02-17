@@ -251,7 +251,15 @@ export const NewProductManagement = () => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => deleteProduct.mutate({ id: product.id })}
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        `Are you sure you want to delete ${product.name}?`,
+                      )
+                    ) {
+                      deleteProduct.mutate({ id: product.id });
+                    }
+                  }}
                   className="rounded-md border border-red-500 bg-red-100 p-2 text-red-500 hover:bg-red-200"
                 >
                   <Trash2 className="h-4 w-4" />
