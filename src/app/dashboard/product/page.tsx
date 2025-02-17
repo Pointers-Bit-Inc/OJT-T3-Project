@@ -44,8 +44,6 @@ const initialProducts = [
 ];
 
 export default function Product() {
-  const data = getData();
-
   const router = useRouter();
   const [active, setActive] = useState("products");
   const [productToDelete, setProductToDelete] = useState(null);
