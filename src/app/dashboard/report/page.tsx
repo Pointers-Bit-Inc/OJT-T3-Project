@@ -49,35 +49,8 @@ export default function Report() {
   const [active, setActive] = useState("report");
   const [transactions, setTransactions] = useState(initialTransactions);
 
-  const menuItems = [
-    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Products", href: "/dashboard/product", icon: Package },
-    { name: "Report", href: "/dashboard/report", icon: BarChart },
-  ];
-
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
-      <aside className="hidden w-64 flex-col bg-white p-6 shadow-md md:flex">
-        <nav className="flex flex-col space-y-2">
-          {menuItems.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={`flex items-center rounded-md p-3 ${
-                active === item.name.toLowerCase()
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-700 hover:bg-gray-200"
-              }`}
-              onClick={() => setActive(item.name.toLowerCase())}
-            >
-              <item.icon className="mr-3 h-5 w-5" />
-              {item.name}
-            </Link>
-          ))}
-        </nav>
-      </aside>
-
       {/* Main content */}
       <main className="relative flex-1 p-6 md:p-8">
         <div className="flex flex-col space-y-6">
