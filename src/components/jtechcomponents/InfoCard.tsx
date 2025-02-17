@@ -1,35 +1,40 @@
+import React from "react";
 import { Card, CardHeader, CardTitle, CardDescription } from "../ui/card";
 
-// Define types for the props
 interface InfoCardProps {
   icon: JSX.Element;
   title: string;
   value: string;
-  percentageChange: string;
+  percentageChange: string; 
   subtitle: string;
 }
 
-export default function InfoCard({
+const InfoCard: React.FC<InfoCardProps> = ({
   icon,
   title,
   value,
   percentageChange,
   subtitle,
-}: InfoCardProps) {
+}) => {
+  const isChangePositive = percentageChange.includes("Up"); 
+  const changeColor = isChangePositive ? "text-green-500" : "text-red-500";
+  const bgColor = isChangePositive ? "bg-green-100" : "bg-red-100";
+
+  const [percentageValue, trend] = percentageChange.split(" ");
+
   return (
-    <Card className="rounded-lg bg-white p-6 shadow-md">
+    <Card className="rounded-lg bg-white p-4 shadow-md w-70 h-45"> 
       <CardHeader>
         <div className="flex items-center">
-          <div className="mr-2 flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
-            <span className="text-green-500">{icon}</span>
+          <div className={`mr-2 flex h-8 w-8 items-center justify-center rounded-full ${bgColor}`}>
+            <span className={changeColor}>{icon}</span>
           </div>
           <div>
-            <CardTitle>{title}</CardTitle>
+            <CardTitle className="text-base">{title}</CardTitle>
             <CardDescription>
-              <p className="text-2xl font-bold">{value}</p>
+              <p className="text-xl font-bold">{value}</p>
               <p className="text-sm text-gray-500">
-                <span className="text-green-500">{percentageChange}</span>{" "}
-                {subtitle}
+                <span className={changeColor}>{percentageValue}</span> {trend} from {subtitle}
               </p>
             </CardDescription>
           </div>
@@ -37,4 +42,7 @@ export default function InfoCard({
       </CardHeader>
     </Card>
   );
-}
+};
+
+export default InfoCard;
+

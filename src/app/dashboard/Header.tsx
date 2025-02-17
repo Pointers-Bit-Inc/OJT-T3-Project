@@ -114,7 +114,7 @@ export default function Header() {
         className={`fixed left-0 top-0 z-50 h-full w-64 transform bg-white shadow-lg transition-transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="flex items-center justify-between border-b px-4 py-4">
-          <h2 className="text-lg font-bold">JTechShofy</h2>
+          <h2 className="text-lg font-bold">JTechShafey</h2>
           <button onClick={() => setSidebarOpen(false)}>
             <X className="h-6 w-6 text-gray-600" />
           </button>

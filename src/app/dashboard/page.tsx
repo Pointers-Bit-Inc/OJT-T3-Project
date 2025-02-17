@@ -1,66 +1,51 @@
+// Dashboard.tsx
 import React from "react";
 import InfoCard from "~/components/jtechcomponents/InfoCard";
-// import { Card, CardHeader, CardTitle, CardDescription } from "shadcn";
+import { FaBox, FaExclamation, FaMoneyBillTrendUp } from 'react-icons/fa6';
+import Link from 'next/link';
 
 function Dashboard() {
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Main Content (Sidebar removed) */}
       <main className="flex-1 p-6">
-        {/* flex-1 still important to fill space */}
-        <h1 className="mb-4 text-2xl font-bold">Dashboard</h1>
-        {/* Summary Cards */}
+        <h1 className="mb-4 text-3xl font-bold">Dashboard</h1>
+        <p className="text-gray-700 mb-6">Welcome to the admin dashboard</p>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <InfoCard
-            icon={
-              <svg //separate for it not to be bulky #TODO
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4.5v15m7.5-15V4.5m0 0l-6.75 6.75M12 4.5l-6.75 6.75"
-                />
-              </svg>
-            }
-            title="Total Transactions"
-            value="600432"
-            percentageChange="7.3% Up"
-            subtitle="from yesterday"
-          />
 
-          <InfoCard
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 5v14m7-7h-14"
-                />
-              </svg>
-            }
-            title="New Users"
-            value="34021"
-            percentageChange="5.1% Down"
-            subtitle="from yesterday"
-          />
+          <Link href="/dashboard/product" className="hover:scale-105 transition duration-300">
+            <InfoCard
+              icon={<FaBox className="h-6 w-6" />}
+              title="Total Stock"
+              value="56837"
+              percentageChange="10.5% Up"
+              subtitle="from past week"
+            />
+          </Link>
+
+          <Link href="/dashboard/product" className="hover:scale-105 transition duration-300">
+            <InfoCard
+              icon={<FaExclamation className="h-6 w-6" />}
+              title="Total Low-stock alerts"
+              value="120"
+              percentageChange="1.3% Down"
+              subtitle="from past week"
+            />
+          </Link>
+
+          <Link href="/dashboard/report" className="hover:scale-105 transition duration-300">
+            <InfoCard
+              icon={<FaMoneyBillTrendUp className="h-6 w-6" />}
+              title="Total Transactions"
+              value="600432"
+              percentageChange="7.3% Up"
+              subtitle="from yesterday"
+            />
+          </Link>
         </div>
-        {/* Rest of your dashboard content */}
       </main>
     </div>
   );
 }
 
 export default Dashboard;
+
