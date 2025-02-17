@@ -10,6 +10,7 @@ import { Menu, Package, LayoutDashboard, BarChart } from "lucide-react";
 import { Table } from "~/components/ui/table";
 import { DataTable } from "~/app/payments/data-table";
 import { Payment, columns } from "~/app/payments/columns";
+import { ProductManagement } from "~/app/_components/product";
 
 async function getData(): Promise<Payment[]> {
   // Fetch data from your API here.
@@ -114,6 +115,7 @@ export default function Product() {
           </p>
         </Card> */}
         <DataTable columns={columns} data={data} />
+        <ProductManagement />
       </main>
     </div>
   );
