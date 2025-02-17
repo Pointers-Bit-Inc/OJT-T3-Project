@@ -14,8 +14,9 @@ datasource db {
 }
 
 
-//Product with an id, name, category, price, quantity and status  as strings and 
-model Product {
+//
+// Product with an id, name, category, price, quantity and status  as strings and 
+ model Product {
   id       String  @id @default(uuid()) // Unique identifier
   name     String  // Product name
   category String  // Category of the product
@@ -23,6 +24,13 @@ model Product {
   quantity Int     // Available stock
   status   String  // Product status (e.g., "Available", "Low stock", "Out of Stock")
   createdAt DateTime @default(now()) // Timestamp for record creation
+ }
+
+model Post {
+    id        Int      @id @default(autoincrement())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([name])
 }
-
-

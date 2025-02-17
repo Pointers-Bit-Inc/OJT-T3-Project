@@ -90,7 +90,7 @@ export default function Product() {
 
   const handleEditSubmit = () => {
     const updatedProducts = products.map((prod) =>
-      prod === editingProduct ? { ...prod, ...editingProduct } : prod
+      prod === editingProduct ? { ...prod, ...editingProduct } : prod,
     );
     setProducts(updatedProducts);
     setShowModal(false);
@@ -134,7 +134,7 @@ export default function Product() {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      <aside className="hidden md:flex w-64 flex-col bg-white p-6 shadow-md">
+      <aside className="hidden w-64 flex-col bg-white p-6 shadow-md md:flex">
         <nav className="flex flex-col space-y-2">
           {menuItems.map((item) => (
             <Link
@@ -155,11 +155,11 @@ export default function Product() {
       </aside>
 
       <main className="relative flex-1 p-6 md:p-8">
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <h1 className="text-3xl font-bold">Products</h1>
           <div>
             <Button
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-blue-600 text-white hover:bg-blue-700"
               onClick={handleAddProductClick}
             >
               + Add Product
@@ -167,7 +167,7 @@ export default function Product() {
             <input
               type="search"
               placeholder="Search product name"
-              className="ml-4 px-3 py-2 border rounded"
+              className="ml-4 rounded border px-3 py-2"
             />
           </div>
         </div>
@@ -175,7 +175,7 @@ export default function Product() {
         <p className="text-gray-700">Manage your products here.</p>
 
         <div className="container mx-auto">
-          <Card className="mt-6 p-6 shadow-md w-full">
+          <Card className="mt-6 w-full p-6 shadow-md">
             <h2 className="text-lg font-bold">Product List</h2>
 
             <Table>
@@ -199,7 +199,7 @@ export default function Product() {
                         alt={product.name}
                         width={50}
                         height={50}
-                        className="h-12 w-12 object-cover rounded"
+                        className="h-12 w-12 rounded object-cover"
                       />
                     </TableCell>
                     <TableCell>{product.name}</TableCell>
@@ -211,15 +211,15 @@ export default function Product() {
                         product.status === "Out of Stock"
                           ? "text-red-500"
                           : product.status === "Low Stock"
-                          ? "text-yellow-500"
-                          : "text-green-500"
+                            ? "text-yellow-500"
+                            : "text-green-500"
                       }
                     >
                       {product.status}
                     </TableCell>
                     <TableCell>
                       <button
-                        className="text-blue-500 hover:text-blue-700 mr-2"
+                        className="mr-2 text-blue-500 hover:text-blue-700"
                         onClick={() => handleEditClick(product)} // Show modal for editing
                       >
                         <Edit className="h-4 w-4" />
@@ -240,15 +240,15 @@ export default function Product() {
 
         {/* Confirmation Modal for Delete */}
         {showConfirmation && (
-          <div className="fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-md shadow-lg">
+          <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black/50">
+            <div className="rounded-md bg-white p-6 shadow-lg">
               <p>Are you sure you want to delete this product?</p>
               <div className="mt-4 flex justify-end">
                 <Button variant="ghost" onClick={cancelDelete}>
                   Cancel
                 </Button>
                 <Button
-                  className="bg-red-600 hover:bg-red-700 text-white ml-2"
+                  className="ml-2 bg-red-600 text-white hover:bg-red-700"
                   onClick={confirmDelete}
                 >
                   Delete
@@ -260,18 +260,23 @@ export default function Product() {
 
         {/* Edit Product Modal */}
         {showModal && (
-          <div className="fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-md shadow-lg w-96">
+          <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black/50">
+            <div className="w-96 rounded-md bg-white p-6 shadow-lg">
               <h3 className="text-xl font-semibold">Edit Product</h3>
               <div className="mt-4">
-                <label className="block text-sm font-medium">Product Name</label>
+                <label className="block text-sm font-medium">
+                  Product Name
+                </label>
                 <input
                   type="text"
                   value={editingProduct.name}
                   onChange={(e) =>
-                    setEditingProduct({ ...editingProduct, name: e.target.value })
+                    setEditingProduct({
+                      ...editingProduct,
+                      name: e.target.value,
+                    })
                   }
-                  className="mt-1 w-full p-2 border rounded"
+                  className="mt-1 w-full rounded border p-2"
                 />
               </div>
               <div className="mt-4">
@@ -280,9 +285,12 @@ export default function Product() {
                   type="text"
                   value={editingProduct.category}
                   onChange={(e) =>
-                    setEditingProduct({ ...editingProduct, category: e.target.value })
+                    setEditingProduct({
+                      ...editingProduct,
+                      category: e.target.value,
+                    })
                   }
-                  className="mt-1 w-full p-2 border rounded"
+                  className="mt-1 w-full rounded border p-2"
                 />
               </div>
               <div className="mt-4">
@@ -291,9 +299,12 @@ export default function Product() {
                   type="text"
                   value={editingProduct.price}
                   onChange={(e) =>
-                    setEditingProduct({ ...editingProduct, price: e.target.value })
+                    setEditingProduct({
+                      ...editingProduct,
+                      price: e.target.value,
+                    })
                   }
-                  className="mt-1 w-full p-2 border rounded"
+                  className="mt-1 w-full rounded border p-2"
                 />
               </div>
               <div className="mt-4">
@@ -302,9 +313,12 @@ export default function Product() {
                   type="number"
                   value={editingProduct.quantity}
                   onChange={(e) =>
-                    setEditingProduct({ ...editingProduct, quantity: e.target.value })
+                    setEditingProduct({
+                      ...editingProduct,
+                      quantity: e.target.value,
+                    })
                   }
-                  className="mt-1 w-full p-2 border rounded"
+                  className="mt-1 w-full rounded border p-2"
                 />
               </div>
               <div className="mt-6 flex justify-end">
@@ -312,7 +326,7 @@ export default function Product() {
                   Cancel
                 </Button>
                 <Button
-                  className="bg-blue-600 hover:bg-blue-700 text-white ml-2"
+                  className="ml-2 bg-blue-600 text-white hover:bg-blue-700"
                   onClick={handleEditSubmit}
                 >
                   Save
@@ -324,18 +338,20 @@ export default function Product() {
 
         {/* Add Product Modal */}
         {showAddModal && (
-          <div className="fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-md shadow-lg w-96">
+          <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black/50">
+            <div className="w-96 rounded-md bg-white p-6 shadow-lg">
               <h3 className="text-xl font-semibold">Add Product</h3>
               <div className="mt-4">
-                <label className="block text-sm font-medium">Product Name</label>
+                <label className="block text-sm font-medium">
+                  Product Name
+                </label>
                 <input
                   type="text"
                   value={newProduct.name}
                   onChange={(e) =>
                     setNewProduct({ ...newProduct, name: e.target.value })
                   }
-                  className="mt-1 w-full p-2 border rounded"
+                  className="mt-1 w-full rounded border p-2"
                 />
               </div>
               <div className="mt-4">
@@ -346,7 +362,7 @@ export default function Product() {
                   onChange={(e) =>
                     setNewProduct({ ...newProduct, category: e.target.value })
                   }
-                  className="mt-1 w-full p-2 border rounded"
+                  className="mt-1 w-full rounded border p-2"
                 />
               </div>
               <div className="mt-4">
@@ -357,7 +373,7 @@ export default function Product() {
                   onChange={(e) =>
                     setNewProduct({ ...newProduct, price: e.target.value })
                   }
-                  className="mt-1 w-full p-2 border rounded"
+                  className="mt-1 w-full rounded border p-2"
                 />
               </div>
               <div className="mt-4">
@@ -368,7 +384,7 @@ export default function Product() {
                   onChange={(e) =>
                     setNewProduct({ ...newProduct, quantity: e.target.value })
                   }
-                  className="mt-1 w-full p-2 border rounded"
+                  className="mt-1 w-full rounded border p-2"
                 />
               </div>
               <div className="mt-6 flex justify-end">
@@ -376,7 +392,7 @@ export default function Product() {
                   Cancel
                 </Button>
                 <Button
-                  className="bg-blue-600 hover:bg-blue-700 text-white ml-2"
+                  className="ml-2 bg-blue-600 text-white hover:bg-blue-700"
                   onClick={handleAddProductSubmit}
                 >
                   Add Product
@@ -385,6 +401,7 @@ export default function Product() {
             </div>
           </div>
         )}
+        <ProductManagement />
       </main>
     </div>
   );
