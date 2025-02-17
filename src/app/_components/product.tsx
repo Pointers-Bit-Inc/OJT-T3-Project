@@ -2,8 +2,23 @@
 
 import { useState } from "react";
 import { api } from "~/trpc/react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "~/components/ui/dialog";
 
-type EditMode = string | number | null;
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/components/ui/table";
 
 interface Product {
   id: string | number;
@@ -13,7 +28,14 @@ interface Product {
   quantity: number;
 }
 
-const ProductModal = ({ isOpen, onClose, editMode, editData }: {
+type EditMode = string | number | null;
+
+const ProductModal = ({
+  isOpen,
+  onClose,
+  editMode,
+  editData,
+}: {
   isOpen: boolean;
   onClose: () => void;
   editMode: EditMode;
@@ -22,7 +44,9 @@ const ProductModal = ({ isOpen, onClose, editMode, editData }: {
   const [name, setName] = useState(editData?.name || "");
   const [category, setCategory] = useState(editData?.category || "");
   const [price, setPrice] = useState(editData?.price?.toString() || "");
-  const [quantity, setQuantity] = useState(editData?.quantity?.toString() || "");
+  const [quantity, setQuantity] = useState(
+    editData?.quantity?.toString() || "",
+  );
 
   const utils = api.useUtils();
   const createProduct = api.product.create.useMutation({
@@ -47,41 +71,63 @@ const ProductModal = ({ isOpen, onClose, editMode, editData }: {
     setQuantity("");
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-8 rounded-lg w-full max-w-md">
-        <h2 className="text-2xl font-semibold mb-4">{editMode ? "Update Product" : "Add Product"}</h2>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>
+            {editMode ? "Update Product" : "Add Product"}
+          </DialogTitle>
+        </DialogHeader>
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            const productData = { name, category, price: Number(price), quantity: Number(quantity) };
-
-            if (editMode) {
-              if (typeof editMode === 'string') {
-                updateProduct.mutate({ id: editMode, ...productData });
-              } else if (typeof editMode === 'number') {
-                updateProduct.mutate({ id: editMode.toString(), ...productData });
-              }
-            } else {
-              createProduct.mutate(productData);
-            }
+            const productData = {
+              name,
+              category,
+              price: Number(price),
+              quantity: Number(quantity),
+            };
+            editMode
+              ? updateProduct.mutate({
+                  id: editMode.toString(),
+                  ...productData,
+                })
+              : createProduct.mutate(productData);
           }}
-          className="flex flex-col gap-4"
+          className="space-y-4"
         >
-          <input type="text" placeholder="Product Name" value={name} onChange={(e) => setName(e.target.value)} className="rounded border px-4 py-2" />
-          <input type="text" placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)} className="rounded border px-4 py-2" />
-          <input type="number" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} className="rounded border px-4 py-2" />
-          <input type="number" placeholder="Quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)} className="rounded border px-4 py-2" />
-
+          <Input
+            placeholder="Product Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <Input
+            placeholder="Category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          />
+          <Input
+            type="number"
+            placeholder="Price"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+          />
+          <Input
+            type="number"
+            placeholder="Quantity"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+          />
           <div className="flex justify-end gap-2">
-            <button type="button" onClick={onClose} className="rounded-lg border border-gray-300 px-4 py-2">Cancel</button>
-            <button type="submit" className="rounded-lg bg-blue-500 py-2 px-4 text-white">{editMode ? "Update" : "Add"}</button>
+            <Button variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button type="submit">{editMode ? "Update" : "Add"}</Button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 
@@ -92,8 +138,10 @@ export const ProductManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const { data: allProducts } = api.product.getAll.useQuery();
-  const { data: searchResults } = api.product.search.useQuery({ query: searchQuery }, { enabled: !!searchQuery });
-
+  const { data: searchResults } = api.product.search.useQuery(
+    { query: searchQuery },
+    { enabled: !!searchQuery },
+  );
   const utils = api.useUtils();
   const deleteProduct = api.product.delete.useMutation({
     onSuccess: async () => {
@@ -102,48 +150,61 @@ export const ProductManagement = () => {
   });
 
   return (
-    <div className="mx-auto w-full max-w-5xl">
+    <div className="mx-auto w-full max-w-5xl space-y-4">
       <h2 className="text-2xl font-semibold">Product Management</h2>
-
-      <div className="flex justify-end items-center mt-4"> {/* Button and search on the same line */}
-        <button onClick={() => setIsModalOpen(true)} className="rounded-full bg-blue-500 py-2 px-4 text-white">
-          Add Product
-        </button>
-        <input
-          type="text"
+      <div className="flex items-center justify-between">
+        <Button onClick={() => setIsModalOpen(true)}>Add Product</Button>
+        <Input
           placeholder="Search Products..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="rounded border px-4 py-2 ml-4" // Add margin for spacing
         />
       </div>
-
-      <div className="mt-4">
-        <h3 className="text-xl font-semibold">Search Results</h3>
-        <div className="mt-2 overflow-x-auto">
-          <table className="w-full table-auto">
-            <thead>
-              <tr><th>Name</th><th>Category</th><th>Price</th><th>Quantity</th><th>Actions</th></tr>
-            </thead>
-            <tbody>
-              {(searchQuery ? searchResults : allProducts)?.map((product) => (
-                <tr key={product.id}>
-                  <td>{product.name}</td>
-                  <td>{product.category}</td>
-                  <td>{product.price}</td>
-                  <td>{product.quantity}</td>
-                  <td>
-                    <button onClick={() => { setEditMode(product.id); setEditData(product); setIsModalOpen(true); }} className="text-yellow-500 hover:text-yellow-700">✏️ Edit</button>
-                    <button onClick={() => deleteProduct.mutate({ id: product.id })} className="ml-2 text-red-500 hover:text-red-700">❌ Delete</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <ProductModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} editMode={editMode} editData={editData} />
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Name</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Quantity</TableHead>
+            <TableHead>Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {(searchQuery ? searchResults : allProducts)?.map((product) => (
+            <TableRow key={product.id}>
+              <TableCell>{product.name}</TableCell>
+              <TableCell>{product.category}</TableCell>
+              <TableCell>{product.price}</TableCell>
+              <TableCell>{product.quantity}</TableCell>
+              <TableCell className="flex gap-2">
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    setEditMode(product.id);
+                    setEditData(product);
+                    setIsModalOpen(true);
+                  }}
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => deleteProduct.mutate({ id: product.id })}
+                >
+                  Delete
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <ProductModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        editMode={editMode}
+        editData={editData}
+      />
     </div>
   );
 };
