@@ -1,10 +1,10 @@
+// /components/jtechcomponents/sidebar.tsx
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BarChart, Home, ShoppingCart } from "lucide-react";
 import { cn } from "~/lib/utils";
-import Header from "~/app/dashboard/Header";
 
 const menuItems = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
@@ -17,7 +17,7 @@ export default function Sidebar() {
 
   return (
     <aside className="fixed left-0 top-0 hidden h-screen w-64 flex-col bg-white p-6 md:flex">
-      {/* Logo Section - Centered */}
+      {/* Logo Section */}
       <div className="mb-6 flex items-center justify-center">
         <h2 className="text-lg font-bold text-gray-700 md:text-xl">
           JTechShofy

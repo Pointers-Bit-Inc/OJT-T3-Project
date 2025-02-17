@@ -18,13 +18,22 @@ export default function DashboardLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body className="flex h-screen bg-gray-100">
-        {/* Main Layout */}
-        <div className="flex flex-1 flex-col">
+        {/* Sidebar Section */}
+        <div className="hidden w-64 flex-none lg:block">
           <Sidebar />
-          <Header />
-          {/* Content Section */}
-          <main className="flex flex-1 p-6">{children}</main>
         </div>
+
+        {/* Main Content Section */}
+        <div className="flex flex-1 flex-col">
+          {/* Header */}
+          <Header />
+
+          {/* Content Area */}
+          <main className="flex-1 overflow-auto p-6">{children}</main>
+        </div>
+
+        {/* Mobile Sidebar Toggle (Optional) */}
+        {/* You can use a button to toggle the sidebar on mobile devices if needed */}
       </body>
     </html>
   );
