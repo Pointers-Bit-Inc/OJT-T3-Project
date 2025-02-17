@@ -164,7 +164,11 @@ export const NewProductManagement = () => {
         </div>
         <div className="flex items-center gap-6">
           <Button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              setEditMode(null);
+              setEditData(null);
+              setIsModalOpen(true);
+            }}
             className="border border-green-500 bg-green-100 text-green-500 hover:bg-green-200"
           >
             <svg
