@@ -16,6 +16,7 @@ import {
 } from "~/components/ui/table";
 import { Button } from "~/components/ui/button";
 import { ProductManagement } from "~/app/_components/product";
+import { never } from "zod";
 
 const initialProducts = [
   {
@@ -62,7 +63,7 @@ export default function Product() {
   });
   const [products, setProducts] = useState(initialProducts); // State for product list
 
-  const handleDeleteClick = (product) => {
+  const handleDeleteClick = (product: any) => {
     setProductToDelete(product);
     setShowConfirmation(true);
   };
@@ -79,7 +80,7 @@ export default function Product() {
     setProductToDelete(null);
   };
 
-  const handleEditClick = (product) => {
+  const handleEditClick = (product: any) => {
     setEditingProduct(product);
     setShowModal(true); // Show modal for editing
   };
@@ -91,7 +92,7 @@ export default function Product() {
 
   const handleEditSubmit = () => {
     const updatedProducts = products.map((prod) =>
-      prod === editingProduct ? { ...prod, ...editingProduct } : prod,
+      prod === editingProduct ? { prod: never, editingProduct: never} : prod,
     );
     setProducts(updatedProducts);
     setShowModal(false);
