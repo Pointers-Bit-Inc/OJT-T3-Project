@@ -9,7 +9,7 @@ export default function Product() {
       <main className="flex-1 p-6">
         <h1 className="mb-4 text-3xl font-bold">Products</h1>
         <NewProductManagement />
-        <ProductManagement />
+        {/* <ProductManagement /> */}
       </main>
     </div>
   );

@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-
+import { Pencil, Trash2 } from "lucide-react"; // Import icons from Lucide
 interface Product {
   id: string | number;
   name: string;
@@ -188,29 +188,45 @@ export const NewProductManagement = () => {
           />
         </div>
       </div>
-      <Table>
+      <Table className="overflow-hidden rounded-lg border border-gray-300 bg-white">
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Quantity</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead className="px-5 py-5 font-semibold">Name</TableHead>
+            <TableHead className="px-5 py-5 font-semibold">Category</TableHead>
+            <TableHead className="px-5 py-5 font-semibold">Price</TableHead>
+            <TableHead className="px-5 py-5 font-semibold">Quantity</TableHead>
+            <TableHead className="px-5 py-5 font-semibold">Status</TableHead>
+            <TableHead className="px-5 py-5 font-semibold">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {(searchQuery ? searchResults : allProducts)?.map((product) => (
             <TableRow key={product.id}>
-              <TableCell>{product.name}</TableCell>
-              <TableCell>{product.category}</TableCell>
-              <TableCell>{product.price}</TableCell>
-              <TableCell>{product.quantity}</TableCell>
+              <TableCell className="px-5 py-5 text-gray-700">
+                {product.name}
+              </TableCell>
+              <TableCell className="px-5 py-5 text-gray-700">
+                {product.category}
+              </TableCell>
+              <TableCell className="text-black-600 px-5 py-5 font-semibold">
+                {product.price}
+              </TableCell>
+              <TableCell
+                className={`${
+                  product.quantity === 0
+                    ? "text-red-900"
+                    : product.quantity <= 5
+                      ? "text-yellow-900"
+                      : "text-black"
+                } justify flex px-5 py-5`}
+              >
+                {product.quantity}
+              </TableCell>
               <TableCell
                 className={`${
                   product.status === "Out of Stock"
                     ? "text-red-500"
-                    : product.status === "Low Stock"
+                    : product.status === "Low stock"
                       ? "text-yellow-500"
                       : "text-green-500"
                 }`}
@@ -220,44 +236,25 @@ export const NewProductManagement = () => {
               <TableCell className="flex gap-2">
                 <Button
                   variant="ghost"
+                  size="icon"
                   onClick={() => {
                     setEditMode(product.id);
                     setEditData(product);
                     setIsModalOpen(true);
                   }}
-                  className="border border-yellow-500 bg-yellow-100 p-1 text-yellow-500 hover:bg-yellow-200"
+                  className="rounded-md border border-yellow-500 bg-yellow-100 p-2 text-yellow-500 hover:bg-yellow-200"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-3 w-3"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <Pencil className="h-4 w-4" />
                 </Button>
 
+                {/* Delete Button */}
                 <Button
                   variant="ghost"
+                  size="icon"
                   onClick={() => deleteProduct.mutate({ id: product.id })}
-                  className="border border-red-500 bg-red-100 p-1 text-red-500 hover:bg-red-200"
+                  className="rounded-md border border-red-500 bg-red-100 p-2 text-red-500 hover:bg-red-200"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-3 w-3"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <Trash2 className="h-4 w-4" />
                 </Button>
               </TableCell>
             </TableRow>
