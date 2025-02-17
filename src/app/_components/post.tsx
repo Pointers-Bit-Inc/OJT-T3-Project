@@ -76,7 +76,7 @@ export function LatestPost() {
         <h3 className="text-lg font-semibold">All Reports:</h3>
         <ul className="mt-2">
           {allPosts?.length ? (
-            allPosts.map((post) => (
+            allPosts.map((post: any) => (
               <li
                 key={post.id}
                 className="text-black-300 flex items-center justify-between truncate"
@@ -148,7 +148,7 @@ export function LatestPost() {
         <h3 className="text-lg font-semibold">Search Results:</h3>
         <ul className="mt-2">
           {searchQuery && searchResults?.length ? (
-            searchResults.map((post) => (
+            searchResults.map((post: any) => (
               <li key={post.id} className="text-black-300 truncate">
                 {post.name}
               </li>

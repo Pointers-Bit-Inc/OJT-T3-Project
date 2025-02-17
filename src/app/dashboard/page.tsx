@@ -1,4 +1,3 @@
-// Dashboard.tsx
 import React from "react";
 import InfoCard from "~/components/jtechcomponents/InfoCard";
 import { FaBox, FaExclamation, FaMoneyBillTrendUp } from "react-icons/fa6";

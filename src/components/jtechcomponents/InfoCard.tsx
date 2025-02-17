@@ -16,17 +16,17 @@ const InfoCard: React.FC<InfoCardProps> = ({
   percentageChange,
   subtitle,
 }) => {
-  const isChangePositive = percentageChange.includes("Up"); 
+  const isChangePositive = percentageChange.includes("Up");
   const changeColor = isChangePositive ? "text-green-500" : "text-red-500";
   const bgColor = isChangePositive ? "bg-green-100" : "bg-red-100";
 
   const [percentageValue, trend] = percentageChange.split(" ");
 
   return (
-    <Card className="rounded-lg bg-white p-4 shadow-md w-70 h-45"> 
+    <Card className="rounded-lg bg-white p-4 shadow-md w-70 h-auto"> 
       <CardHeader>
-        <div className="flex items-center">
-          <div className={`mr-2 flex h-8 w-8 items-center justify-center rounded-full ${bgColor}`}>
+        <div className="flex flex-col items-start"> 
+          <div className={`mb-2 flex h-8 w-8 items-center justify-center rounded-full ${bgColor}`}>
             <span className={changeColor}>{icon}</span>
           </div>
           <div>
@@ -45,4 +45,3 @@ const InfoCard: React.FC<InfoCardProps> = ({
 };
 
 export default InfoCard;
-

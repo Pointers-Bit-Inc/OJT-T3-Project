@@ -14,7 +14,6 @@ import {
 import { Button } from "~/components/ui/button";
 import { Package, LayoutDashboard, BarChart } from "lucide-react";
 
-// Sample transaction data
 const initialTransactions = [
   {
     id: 1,

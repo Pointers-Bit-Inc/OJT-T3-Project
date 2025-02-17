@@ -18,7 +18,6 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
 
     console.log("Register attempted with", { username, email, password });
 
-    // Simulate API call or user registration logic
     setTimeout(() => {
       alert("Registration successful! Please login.");
       onSwitch();
