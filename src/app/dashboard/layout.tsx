@@ -28,12 +28,8 @@ export default function DashboardLayout({
           {/* Header */}
           <Header />
 
-          {/* Content Area */}
           <main className="flex-1 overflow-auto p-6">{children}</main>
         </div>
-
-        {/* Mobile Sidebar Toggle (Optional) */}
-        {/* You can use a button to toggle the sidebar on mobile devices if needed */}
       </body>
     </html>
   );
