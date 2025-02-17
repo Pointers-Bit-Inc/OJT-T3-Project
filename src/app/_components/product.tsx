@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react"; // #TODO hydration error
 import { api } from "~/trpc/react";
 import {
   Dialog,
@@ -26,6 +26,7 @@ interface Product {
   category: string;
   price: number;
   quantity: number;
+  status: string;
 }
 
 type EditMode = string | number | null;
@@ -44,9 +45,14 @@ const ProductModal = ({
   const [name, setName] = useState(editData?.name || "");
   const [category, setCategory] = useState(editData?.category || "");
   const [price, setPrice] = useState(editData?.price?.toString() || "");
+  const [status, setStatus] = useState(editData?.status || "");
+  const [isClient, setIsClient] = useState(false);
   const [quantity, setQuantity] = useState(
     editData?.quantity?.toString() || "",
   );
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const utils = api.useUtils();
   const createProduct = api.product.create.useMutation({
@@ -56,6 +62,7 @@ const ProductModal = ({
       onClose();
     },
   });
+
   const updateProduct = api.product.update.useMutation({
     onSuccess: async () => {
       await utils.product.invalidate();
@@ -153,7 +160,15 @@ export const ProductManagement = () => {
     <div className="mx-auto w-full max-w-5xl space-y-4">
       <h2 className="text-2xl font-semibold">Product Management</h2>
       <div className="flex items-center justify-between">
-        <Button onClick={() => setIsModalOpen(true)}>Add Product</Button>
+        <Button
+          onClick={() => {
+            setEditMode(null);
+            setEditData(null);
+            setIsModalOpen(true);
+          }}
+        >
+          Add Product
+        </Button>
         <Input
           placeholder="Search Products..."
           value={searchQuery}
@@ -167,6 +182,7 @@ export const ProductManagement = () => {
             <TableHead>Category</TableHead>
             <TableHead>Price</TableHead>
             <TableHead>Quantity</TableHead>
+            <TableHead>Status</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -177,6 +193,7 @@ export const ProductManagement = () => {
               <TableCell>{product.category}</TableCell>
               <TableCell>{product.price}</TableCell>
               <TableCell>{product.quantity}</TableCell>
+              <TableCell>{product.status}</TableCell>
               <TableCell className="flex gap-2">
                 <Button
                   variant="ghost"
