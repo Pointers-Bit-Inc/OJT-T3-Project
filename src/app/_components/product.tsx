@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react"; // #TODO hydration error
+import { useState, useEffect } from "react"; 
 import { api } from "~/trpc/react";
 import {
   Dialog,
@@ -158,7 +158,7 @@ export const ProductManagement = () => {
 
   return (
     <div className="mx-auto w-full max-w-5xl space-y-4">
-      <h2 className="text-2xl font-semibold">Product Management</h2>
+      <h2 className="text-2xl font-semibold">Product List</h2>
       <div className="flex items-center justify-between">
         <Button
           onClick={() => {
