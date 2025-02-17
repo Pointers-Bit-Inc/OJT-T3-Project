@@ -1,18 +1,21 @@
 // Dashboard.tsx
 import React from "react";
 import InfoCard from "~/components/jtechcomponents/InfoCard";
-import { FaBox, FaExclamation, FaMoneyBillTrendUp } from 'react-icons/fa6';
-import Link from 'next/link';
+import { FaBox, FaExclamation, FaMoneyBillTrendUp } from "react-icons/fa6";
+import Link from "next/link";
+import { LineChartDashboard } from "~/components/jtechcomponents/LineChartDashboard";
 
 function Dashboard() {
   return (
     <div className="flex h-screen bg-gray-100">
       <main className="flex-1 p-6">
         <h1 className="mb-4 text-3xl font-bold">Dashboard</h1>
-        <p className="text-gray-700 mb-6">Welcome to the admin dashboard</p>
+        <p className="mb-6 text-gray-700">Welcome to the admin dashboard</p>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-
-          <Link href="/dashboard/product" className="hover:scale-105 transition duration-300">
+          <Link
+            href="/dashboard/product"
+            className="transition duration-300 hover:scale-105"
+          >
             <InfoCard
               icon={<FaBox className="h-6 w-6" />}
               title="Total Stock"
@@ -22,7 +25,10 @@ function Dashboard() {
             />
           </Link>
 
-          <Link href="/dashboard/product" className="hover:scale-105 transition duration-300">
+          <Link
+            href="/dashboard/product"
+            className="transition duration-300 hover:scale-105"
+          >
             <InfoCard
               icon={<FaExclamation className="h-6 w-6" />}
               title="Total Low-stock alerts"
@@ -32,7 +38,10 @@ function Dashboard() {
             />
           </Link>
 
-          <Link href="/dashboard/report" className="hover:scale-105 transition duration-300">
+          <Link
+            href="/dashboard/report"
+            className="transition duration-300 hover:scale-105"
+          >
             <InfoCard
               icon={<FaMoneyBillTrendUp className="h-6 w-6" />}
               title="Total Transactions"
@@ -42,10 +51,10 @@ function Dashboard() {
             />
           </Link>
         </div>
+        <LineChartDashboard />
       </main>
     </div>
   );
 }
 
 export default Dashboard;
-
