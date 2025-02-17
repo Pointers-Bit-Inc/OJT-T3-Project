@@ -2,6 +2,8 @@ import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
+import { TRPCReactProvider } from "~/trpc/react";
+
 export const metadata: Metadata = {
   title: "JTechShofy",
   description: "Generated ",
@@ -14,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-        <main>{children}</main> 
+        <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>
   );

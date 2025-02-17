@@ -3,7 +3,14 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Card } from "~/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/components/ui/table";
 import { Button } from "~/components/ui/button";
 import { Package, LayoutDashboard, BarChart } from "lucide-react";
 
@@ -51,7 +58,7 @@ export default function Report() {
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <aside className="hidden md:flex w-64 flex-col bg-white p-6 shadow-md">
+      <aside className="hidden w-64 flex-col bg-white p-6 shadow-md md:flex">
         <nav className="flex flex-col space-y-2">
           {menuItems.map((item) => (
             <Link
@@ -78,8 +85,8 @@ export default function Report() {
           <p className="text-gray-600">View all transaction details below.</p>
 
           {/* Responsive Card */}
-          <Card className="shadow-md p-6 sm:p-4 md:p-6 lg:p-8 w-full max-w-7xl mx-auto">
-            <h2 className="text-xl font-semibold mb-4">Transactions</h2>
+          <Card className="mx-auto w-full max-w-7xl p-6 shadow-md sm:p-4 md:p-6 lg:p-8">
+            <h2 className="mb-4 text-xl font-semibold">Transactions</h2>
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
@@ -113,7 +120,10 @@ export default function Report() {
                         {transaction.status}
                       </TableCell>
                       <TableCell>
-                        <Button variant="link" className="text-blue-500 hover:text-blue-700">
+                        <Button
+                          variant="link"
+                          className="text-blue-500 hover:text-blue-700"
+                        >
                           View
                         </Button>
                       </TableCell>
@@ -125,7 +135,9 @@ export default function Report() {
           </Card>
 
           <div className="flex justify-end">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white">Generate Report</Button>
+            <Button className="bg-blue-600 text-white hover:bg-blue-700">
+              Generate Report
+            </Button>
           </div>
         </div>
       </main>
