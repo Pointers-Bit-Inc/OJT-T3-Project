@@ -5,7 +5,7 @@ import Sidebar from "~/components/jtechcomponents/sidebar";
 import Header from "./Header";
 
 export const metadata: Metadata = {
-  title: "JTechShofy",
+  title: "JTechShafey",
   description: "Generated",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };

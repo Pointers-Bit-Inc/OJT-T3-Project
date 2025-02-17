@@ -20,7 +20,7 @@ export default function Sidebar() {
       {/* Logo Section */}
       <div className="mb-6 flex items-center justify-center">
         <h2 className="text-lg font-bold text-gray-700 md:text-xl">
-          JTechShofy
+        JTechShafey
         </h2>
       </div>
 
