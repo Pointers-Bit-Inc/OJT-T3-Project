@@ -71,7 +71,6 @@ export function ProductManagement() {
               category,
               price: Number(price),
               quantity: Number(quantity),
-              status,
             });
           } else {
             createProduct.mutate({
@@ -79,7 +78,6 @@ export function ProductManagement() {
               category,
               price: Number(price),
               quantity: Number(quantity),
-              status,
             });
           }
         }}
