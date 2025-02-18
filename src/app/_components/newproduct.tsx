@@ -42,14 +42,29 @@ const ProductModal = ({
   editMode: EditMode;
   editData: Product | null;
 }) => {
-  const [name, setName] = useState(editData?.name || "");
-  const [category, setCategory] = useState(editData?.category || "");
-  const [price, setPrice] = useState(editData?.price?.toString() || "");
-  const [status, setStatus] = useState(editData?.status || "");
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+
   const [isClient, setIsClient] = useState(false);
-  const [quantity, setQuantity] = useState(
-    editData?.quantity?.toString() || "",
-  );
+
+  // Update form fields when editData changes
+  useEffect(() => {
+    if (editData) {
+      setName(editData.name);
+      setCategory(editData.category);
+      setPrice(editData.price.toString());
+      setQuantity(editData.quantity.toString());
+    } else {
+      // Reset form when not editing
+      setName("");
+      setCategory("");
+      setPrice("");
+      setQuantity("");
+    }
+  }, [editData]);
+
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -94,6 +109,7 @@ const ProductModal = ({
               category,
               price: Number(price),
               quantity: Number(quantity),
+              status,
             };
             editMode
               ? updateProduct.mutate({
@@ -126,6 +142,7 @@ const ProductModal = ({
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
           />
+
           <div className="flex justify-end gap-2">
             <Button variant="outline" onClick={onClose}>
               Cancel
@@ -143,6 +160,10 @@ export const NewProductManagement = () => {
   const [editMode, setEditMode] = useState<EditMode>(null);
   const [editData, setEditData] = useState<Product | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortConfig, setSortConfig] = useState<{
+    key: "name" | "category" | "price" | null;
+    direction: "asc" | "desc";
+  }>({ key: "name", direction: "asc" });
 
   const { data: allProducts } = api.product.getAll.useQuery();
   const { data: searchResults } = api.product.search.useQuery(
@@ -195,82 +216,150 @@ export const NewProductManagement = () => {
       <Table className="overflow-hidden rounded-lg border border-gray-300 bg-white">
         <TableHeader>
           <TableRow>
-            <TableHead className="px-5 py-5 font-semibold">Name</TableHead>
-            <TableHead className="px-5 py-5 font-semibold">Category</TableHead>
-            <TableHead className="px-5 py-5 font-semibold">Price</TableHead>
+            <TableHead
+              className="cursor-pointer px-5 py-5 font-semibold hover:bg-gray-50"
+              onClick={() =>
+                setSortConfig((prev) => ({
+                  key: "name",
+                  direction:
+                    prev.key === "name" && prev.direction === "asc"
+                      ? "desc"
+                      : "asc",
+                }))
+              }
+            >
+              <div className="flex items-center gap-2">
+                Name
+                {sortConfig.key === "name" &&
+                  (sortConfig.direction === "asc" ? " ↑" : " ↓")}
+              </div>
+            </TableHead>
+            <TableHead
+              className="cursor-pointer px-5 py-5 font-semibold hover:bg-gray-50"
+              onClick={() =>
+                setSortConfig((prev) => ({
+                  key: "category",
+                  direction:
+                    prev.key === "category" && prev.direction === "asc"
+                      ? "desc"
+                      : "asc",
+                }))
+              }
+            >
+              <div className="flex items-center gap-2">
+                Category
+                {sortConfig.key === "category" &&
+                  (sortConfig.direction === "asc" ? " ↑" : " ↓")}
+              </div>
+            </TableHead>
+            <TableHead
+              className="cursor-pointer px-5 py-5 font-semibold hover:bg-gray-50"
+              onClick={() =>
+                setSortConfig((prev) => ({
+                  key: "price",
+                  direction:
+                    prev.key === "price" && prev.direction === "asc"
+                      ? "desc"
+                      : "asc",
+                }))
+              }
+            >
+              <div className="flex items-center gap-2">
+                Price
+                {sortConfig.key === "price" &&
+                  (sortConfig.direction === "asc" ? " ↑" : " ↓")}
+              </div>
+            </TableHead>
             <TableHead className="px-5 py-5 font-semibold">Quantity</TableHead>
             <TableHead className="px-5 py-5 font-semibold">Status</TableHead>
             <TableHead className="px-5 py-5 font-semibold">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {(searchQuery ? searchResults : allProducts)?.map((product) => (
-            <TableRow key={product.id}>
-              <TableCell className="px-5 py-5 text-gray-700">
-                {product.name}
-              </TableCell>
-              <TableCell className="px-5 py-5 text-gray-700">
-                {product.category}
-              </TableCell>
-              <TableCell className="text-black-600 px-5 py-5 font-semibold">
-                {product.price}
-              </TableCell>
-              <TableCell
-                className={`${
-                  product.quantity === 0
-                    ? "text-red-900"
-                    : product.quantity <= 5
-                      ? "text-yellow-900"
-                      : "text-black"
-                } justify flex px-5 py-5`}
-              >
-                {product.quantity}
-              </TableCell>
-              <TableCell
-                className={`${
-                  product.status === "Out of Stock"
-                    ? "text-red-500"
-                    : product.status === "Low stock"
-                      ? "text-yellow-500"
-                      : "text-green-500"
-                }`}
-              >
-                {product.status}
-              </TableCell>
-              <TableCell className="flex gap-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => {
-                    setEditMode(product.id);
-                    setEditData(product);
-                    setIsModalOpen(true);
-                  }}
-                  className="rounded-md border border-blue-600 bg-blue-100 p-2 text-blue-600 hover:bg-blue-200"
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
+          {(searchQuery ? searchResults : allProducts)
+            ?.sort((a, b) => {
+              if (!sortConfig.key) return 0;
 
-                {/* Delete Button */}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => {
-                    if (
-                      window.confirm(
-                        `Are you sure you want to delete ${product.name}?`,
-                      )
-                    ) {
-                      deleteProduct.mutate({ id: product.id });
-                    }
-                  }}
-                  className="rounded-md border border-red-500 bg-red-100 p-2 text-red-500 hover:bg-red-200"
+              if (sortConfig.key === "price") {
+                return sortConfig.direction === "asc"
+                  ? a.price - b.price
+                  : b.price - a.price;
+              }
+
+              const aValue = a[sortConfig.key].toLowerCase();
+              const bValue = b[sortConfig.key].toLowerCase();
+
+              return sortConfig.direction === "asc"
+                ? aValue.localeCompare(bValue)
+                : bValue.localeCompare(aValue);
+            })
+            ?.map((product) => (
+              <TableRow key={product.id}>
+                <TableCell className="px-5 py-5 text-gray-700">
+                  {product.name}
+                </TableCell>
+                <TableCell className="px-5 py-5 text-gray-700">
+                  {product.category}
+                </TableCell>
+                <TableCell className="text-black-600 px-5 py-5 font-semibold">
+                  {product.price}
+                </TableCell>
+                <TableCell
+                  className={`${
+                    product.quantity === 0
+                      ? "text-red-900"
+                      : product.quantity <= 5
+                        ? "text-yellow-900"
+                        : "text-black"
+                  } justify flex px-5 py-5`}
                 >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+                  {product.quantity}
+                </TableCell>
+                <TableCell
+                  className={`${
+                    product.status === "Out of Stock"
+                      ? "text-red-500"
+                      : product.status === "Low stock"
+                        ? "text-yellow-500"
+                        : "text-green-500"
+                  }`}
+                >
+                  {product.status}
+                </TableCell>
+                <TableCell className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      setEditMode(product.id);
+                      setEditData(product);
+                      setIsModalOpen(true);
+                    }}
+                    className="rounded-md border border-blue-600 bg-blue-100 p-2 text-blue-600 hover:bg-blue-200"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+
+                  {/* Delete Button */}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          `Are you sure you want to delete ${product.name}?`,
+                        )
+                      ) {
+                        deleteProduct.mutate({ id: product.id });
+                      }
+                    }}
+                    className="rounded-md border border-red-500 bg-red-100 p-2 text-red-500 hover:bg-red-200"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
       <ProductModal
