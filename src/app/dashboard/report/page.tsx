@@ -134,7 +134,7 @@ export default function Report() {
             {selectedTransaction && (
               <div className="space-y-4">
                 <div className="border-b pb-4 text-center">
-                  <h2 className="text-xl font-bold">JTech Store</h2>
+                  <h2 className="text-xl font-bold">JTechShafey Store</h2>
                   <p className="text-sm text-gray-500">123 Tech Street, Silicon Valley</p>
                   <p className="text-sm text-gray-500">Tel: (555) 123-4567</p>
                 </div>
