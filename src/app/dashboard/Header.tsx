@@ -13,15 +13,27 @@ import {
 } from "~/components/ui/popover";
 import Link from "next/link";
 
+// Create a custom event for search
+export const searchEvent = new Event('sidebarSearch');
+
 export default function Header() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notifications, setNotifications] = useState(6);
+  const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
   const pathname = usePathname();
 
   const handleLogout = () => {
     setSidebarOpen(false);
     router.push("/auth");
+  };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    // Store the search query in localStorage for the sidebar to access
+    localStorage.setItem('sidebarSearchQuery', query.toLowerCase());
+    // Dispatch the custom event
+    window.dispatchEvent(searchEvent);
   };
 
   const navItems = [
@@ -50,6 +62,8 @@ export default function Header() {
             <Input
               placeholder="Search"
               className="w-full pl-10 text-sm text-gray-700"
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
             />
             <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
           </div>
