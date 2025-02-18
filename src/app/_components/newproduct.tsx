@@ -20,6 +20,7 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { Pencil, Trash2 } from "lucide-react"; // Import icons from Lucide
+import { Label } from "recharts";
 interface Product {
   id: string | number;
   name: string;
@@ -120,28 +121,51 @@ const ProductModal = ({
           }}
           className="space-y-4"
         >
-          <Input
-            placeholder="Product Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <Input
-            placeholder="Category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          />
-          <Input
-            type="number"
-            placeholder="Price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-          <Input
-            type="number"
-            placeholder="Quantity"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Product Name
+            </label>
+            <Input
+              placeholder="Enter product name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Category
+            </label>
+            <Input
+              placeholder="Enter category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Price
+            </label>
+            <Input
+              type="number"
+              placeholder="Enter price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Quantity
+            </label>
+            <Input
+              type="number"
+              placeholder="Enter quantity"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+            />
+          </div>
 
           <div className="flex justify-end gap-2">
             <Button variant="outline" onClick={onClose}>
