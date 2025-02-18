@@ -246,7 +246,7 @@ export const NewProductManagement = () => {
                     setEditData(product);
                     setIsModalOpen(true);
                   }}
-                  className="rounded-md border border-yellow-500 bg-yellow-100 p-2 text-yellow-500 hover:bg-yellow-200"
+                  className="rounded-md border border-blue-600 bg-blue-100 p-2 text-blue-600 hover:bg-blue-200"
                 >
                   <Pencil className="h-4 w-4" />
                 </Button>

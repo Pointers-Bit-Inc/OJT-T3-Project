@@ -13,6 +13,12 @@ import {
 } from "~/components/ui/table";
 import { Button } from "~/components/ui/button";
 import { Package, LayoutDashboard, BarChart } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "~/components/ui/dialog";
 
 const initialTransactions = [
   {
@@ -47,6 +53,8 @@ const initialTransactions = [
 export default function Report() {
   const [active, setActive] = useState("report");
   const [transactions, setTransactions] = useState(initialTransactions);
+  const [selectedTransaction, setSelectedTransaction] = useState<typeof initialTransactions[0] | null>(null);
+  const [isReceiptOpen, setIsReceiptOpen] = useState(false);
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -95,6 +103,10 @@ export default function Report() {
                         <Button
                           variant="link"
                           className="text-blue-500 hover:text-blue-700"
+                          onClick={() => {
+                            setSelectedTransaction(transaction);
+                            setIsReceiptOpen(true);
+                          }}
                         >
                           View
                         </Button>
@@ -112,6 +124,62 @@ export default function Report() {
             </Button>
           </div>
         </div>
+
+        {/* E-Receipt Modal */}
+        <Dialog open={isReceiptOpen} onOpenChange={setIsReceiptOpen}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-center text-xl">E-Receipt</DialogTitle>
+            </DialogHeader>
+            {selectedTransaction && (
+              <div className="space-y-4">
+                <div className="border-b pb-4 text-center">
+                  <h2 className="text-xl font-bold">JTech Store</h2>
+                  <p className="text-sm text-gray-500">123 Tech Street, Silicon Valley</p>
+                  <p className="text-sm text-gray-500">Tel: (555) 123-4567</p>
+                </div>
+                
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Receipt No:</span>
+                    <span className="font-medium">#{selectedTransaction.id}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Date:</span>
+                    <span>{selectedTransaction.date}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Customer:</span>
+                    <span>{selectedTransaction.customer}</span>
+                  </div>
+                </div>
+
+                <div className="border-t border-b py-4">
+                  <div className="mb-2 font-semibold">Order Details</div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span>{selectedTransaction.productName}</span>
+                      <span>x{selectedTransaction.quantity}</span>
+                    </div>
+                    <div className="flex justify-between font-semibold">
+                      <span>Total Amount:</span>
+                      <span>{selectedTransaction.price}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2 text-center text-sm">
+                  <div className="font-medium">Payment Status: 
+                    <span className={selectedTransaction.status === "Completed" ? "text-green-500" : "text-yellow-500"}>
+                      {" "}{selectedTransaction.status}
+                    </span>
+                  </div>
+                  <p className="text-gray-500">Thank you for shopping with us!</p>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </main>
     </div>
   );
