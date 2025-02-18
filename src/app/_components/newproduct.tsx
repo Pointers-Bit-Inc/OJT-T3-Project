@@ -88,7 +88,9 @@ const ProductModal = ({
     onSuccess: async () => {
       await utils.product.invalidate();
       setIsSubmitting(false);
-      toast.success("Product created successfully!");
+      toast.success("Product created successfully!", {
+        style: { color: '#22C55E' } // Green color
+      });
       resetForm();
       onClose();
     },
@@ -101,8 +103,11 @@ const ProductModal = ({
   const updateProduct = api.product.update.useMutation({
     onSuccess: async () => {
       await utils.product.invalidate();
+      await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
       setIsSubmitting(false);
-      toast.success("Successfully Updated");
+      toast.success("Successfully Updated", {
+        style: { color: '#22C55E' } // Green color
+      });
       resetForm();
       onClose();
     },
