@@ -42,14 +42,29 @@ const ProductModal = ({
   editMode: EditMode;
   editData: Product | null;
 }) => {
-  const [name, setName] = useState(editData?.name || "");
-  const [category, setCategory] = useState(editData?.category || "");
-  const [price, setPrice] = useState(editData?.price?.toString() || "");
-  const [status, setStatus] = useState(editData?.status || "");
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+
   const [isClient, setIsClient] = useState(false);
-  const [quantity, setQuantity] = useState(
-    editData?.quantity?.toString() || "",
-  );
+
+  // Update form fields when editData changes
+  useEffect(() => {
+    if (editData) {
+      setName(editData.name);
+      setCategory(editData.category);
+      setPrice(editData.price.toString());
+      setQuantity(editData.quantity.toString());
+    } else {
+      // Reset form when not editing
+      setName("");
+      setCategory("");
+      setPrice("");
+      setQuantity("");
+    }
+  }, [editData]);
+
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -94,6 +109,7 @@ const ProductModal = ({
               category,
               price: Number(price),
               quantity: Number(quantity),
+              status,
             };
             editMode
               ? updateProduct.mutate({
@@ -126,6 +142,7 @@ const ProductModal = ({
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
           />
+
           <div className="flex justify-end gap-2">
             <Button variant="outline" onClick={onClose}>
               Cancel
