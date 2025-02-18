@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { Pencil, Trash2 } from "lucide-react"; // Import icons from Lucide
+import { Pencil, Trash2 } from "lucide-react"; 
 interface Product {
   id: string | number;
   name: string;
@@ -49,7 +49,6 @@ const ProductModal = ({
 
   const [isClient, setIsClient] = useState(false);
 
-  // Update form fields when editData changes
   useEffect(() => {
     if (editData) {
       setName(editData.name);
@@ -57,7 +56,6 @@ const ProductModal = ({
       setPrice(editData.price.toString());
       setQuantity(editData.quantity.toString());
     } else {
-      // Reset form when not editing
       setName("");
       setCategory("");
       setPrice("");
