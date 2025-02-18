@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { api } from "~/trpc/react";
 import {
   Dialog,
@@ -31,6 +31,22 @@ interface Product {
 }
 
 type EditMode = string | number | null;
+
+const useDebounce = <T,>(value: T, delay: number): T => {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+};
 
 const ProductModal = ({
   isOpen,
@@ -189,10 +205,12 @@ export const NewProductManagement = () => {
     direction: "asc" | "desc";
   }>({ key: "name", direction: "asc" });
 
+  const debouncedSearchQuery = useDebounce(searchQuery, 500); // 500ms delay
+
   const { data: allProducts } = api.product.getAll.useQuery();
   const { data: searchResults } = api.product.search.useQuery(
-    { query: searchQuery },
-    { enabled: !!searchQuery },
+    { query: debouncedSearchQuery },
+    { enabled: !!debouncedSearchQuery },
   );
   const utils = api.useUtils();
   const deleteProduct = api.product.delete.useMutation({
