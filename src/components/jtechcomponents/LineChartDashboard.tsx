@@ -30,7 +30,7 @@ const chartData = [
 const chartConfig = {
   desktop: {
     label: "Desktop",
-    color: "hsl(210, 100%, 50%)", 
+    color: "hsl(210, 100%, 50%)",
   },
   mobile: {
     label: "Mobile",
@@ -40,17 +40,14 @@ const chartConfig = {
 
 export function LineChartDashboard() {
   return (
-    <Card className="max-w-[full] max-h-[full] p-2 mt-4 overflow-hidden">
+    <Card className="mt-10 max-h-[full] max-w-[full] overflow-hidden p-2">
       <CardHeader className="pb-2">
         <CardTitle className="text-sm">Total Stock Details</CardTitle>
         <CardDescription className="text-xs">Jan - Jun 2024</CardDescription>
       </CardHeader>
-      <CardContent className="p-2 pb-6"> 
+      <CardContent className="p-2 pb-6">
         <ChartContainer config={chartConfig}>
-          <LineChart
-            data={chartData}
-            margin={{ left: 8, right: 8 }}
-          >
+          <LineChart data={chartData} margin={{ left: 8, right: 8 }}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
@@ -58,7 +55,7 @@ export function LineChartDashboard() {
               axisLine={false}
               tickMargin={4}
               tickFormatter={(value) => value.slice(0, 3)}
-              style={{ fontSize: "8px" }} 
+              style={{ fontSize: "8px" }}
             />
             <ChartTooltip
               cursor={false}
