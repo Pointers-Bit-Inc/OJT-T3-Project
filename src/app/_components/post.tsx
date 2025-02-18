@@ -14,7 +14,7 @@ export function LatestPost() {
   const [searchQuery, setSearchQuery] = useState("");
   const { data: searchResults } = api.post.search.useQuery(
     { query: searchQuery },
-    { enabled: !!searchQuery }, // Only run when query is not empty
+    { enabled: !!searchQuery }, 
   );
 
   const createPost = api.post.create.useMutation({
@@ -35,7 +35,7 @@ export function LatestPost() {
   const updatePost = api.post.update.useMutation({
     onSuccess: async () => {
       await utils.post.invalidate();
-      setEditMode(null); // Exit edit mode after update
+      setEditMode(null); 
     },
   });
 
