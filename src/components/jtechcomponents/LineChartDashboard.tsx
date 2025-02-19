@@ -40,7 +40,7 @@ const chartConfig = {
 
 export function LineChartDashboard() {
   return (
-    <Card className="mt-10 max-h-[full] max-w-[full] overflow-hidden p-2">
+    <Card className="mt-10 mb-20 max-h-[full] max-w-[full] overflow-hidden p-2">
       <CardHeader className="pb-2">
         <CardTitle className="text-sm">Total Stock Details</CardTitle>
         <CardDescription className="text-xs">Jan - Jun 2024</CardDescription>
