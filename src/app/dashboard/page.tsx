@@ -6,8 +6,8 @@ import { LineChartDashboard } from "~/components/jtechcomponents/LineChartDashbo
 
 function Dashboard() {
   return (
-    <div className="mb-200 flex h-auto h-screen bg-gray-100">
-      <main className="flex-1 p-6">
+    <div className="flex min-h-screen bg-gray-100">
+      <main className="flex-1 p-6 pb-28">
         <h1 className="mb-4 text-3xl font-bold">Dashboard</h1>
         <p className="mb-6 text-gray-700">Welcome to the admin dashboard</p>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -50,7 +50,9 @@ function Dashboard() {
             />
           </Link>
         </div>
-        <LineChartDashboard />
+        <div className="mb-32">
+          <LineChartDashboard />
+        </div>
       </main>
     </div>
   );

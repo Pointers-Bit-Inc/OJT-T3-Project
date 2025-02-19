@@ -88,15 +88,27 @@ const ProductModal = ({
     onSuccess: async () => {
       await utils.product.invalidate();
       setIsSubmitting(false);
-      toast.success("Product created successfully!", {
-        style: { color: '#22C55E' } // Green color
-      });
+      toast(
+        <div className="flex items-center w-full">
+          <span className="text-black flex-1">Product created successfully!</span>
+          <button onClick={() => toast.dismiss()} className="text-black hover:text-gray-700 ml-8">
+            ✕
+          </button>
+        </div>
+      );
       resetForm();
       onClose();
     },
     onError: (error) => {
       setIsSubmitting(false);
-      toast.error(error.message);
+      toast(
+        <div className="flex items-center w-full">
+          <span className="text-black flex-1">{error.message}</span>
+          <button onClick={() => toast.dismiss()} className="text-black hover:text-gray-700 ml-8">
+            ✕
+          </button>
+        </div>
+      );
     }
   });
 
@@ -105,15 +117,27 @@ const ProductModal = ({
       await utils.product.invalidate();
       await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
       setIsSubmitting(false);
-      toast.success("Successfully Updated", {
-        style: { color: '#22C55E' } // Green color
-      });
+      toast(
+        <div className="flex items-center w-full">
+          <span className="text-black flex-1">Successfully Updated</span>
+          <button onClick={() => toast.dismiss()} className="text-black hover:text-gray-700 ml-8">
+            ✕
+          </button>
+        </div>
+      );
       resetForm();
       onClose();
     },
     onError: (error) => {
       setIsSubmitting(false);
-      toast.error(error.message);
+      toast(
+        <div className="flex items-center w-full">
+          <span className="text-black flex-1">{error.message}</span>
+          <button onClick={() => toast.dismiss()} className="text-black hover:text-gray-700 ml-8">
+            ✕
+          </button>
+        </div>
+      );
     },
     onSettled: () => {
       setIsSubmitting(false);
@@ -266,6 +290,14 @@ export const NewProductManagement = () => {
   const deleteProduct = api.product.delete.useMutation({
     onSuccess: async () => {
       await utils.product.invalidate();
+      toast(
+        <div className="flex items-center w-full">
+          <span className="text-black flex-1">Successfully Deleted</span>
+          <button onClick={() => toast.dismiss()} className="text-black hover:text-gray-700 ml-8">
+            ✕
+          </button>
+        </div>
+      );
     },
   });
 
