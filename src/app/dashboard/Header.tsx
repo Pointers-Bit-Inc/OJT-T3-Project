@@ -45,30 +45,37 @@ export default function Header() {
   return (
     <>
       {/* Top Navbar */}
-      <header className="flex items-center justify-between bg-white px-4 py-3 shadow-sm md:px-6">
-        <div className="flex items-center gap-4">
-          {/* Sidebar Toggle Button */}
-          <button
-            className="block md:hidden"
-            onClick={() => setSidebarOpen(true)}
-            aria-label="Open Sidebar"
-          >
-            <Menu className="h-6 w-6 text-gray-700" />
-          </button>
-        </div>
-
-        <div className="flex items-center gap-6">
-          <div className="relative hidden w-64 md:flex">
-            <Input
-              placeholder="Search"
-              className="w-full pl-10 text-sm text-gray-700"
-              value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
-            />
-            <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
+        <div className="flex h-16 items-center justify-between px-4">
+          {/* Left section with menu button and title */}
+          <div className="flex items-center">
+            <button
+              className="block lg:hidden mr-4"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+              <Menu className="h-6 w-6 text-gray-700" />
+            </button>
           </div>
 
-          <div className="flex items-center gap-4">
+          {/* Center section with title */}
+          <div className="hidden lg:block absolute left-4 ml-4">
+            <h1 className="text-xl font-semibold text-gray-900">JTechShafey</h1>
+          </div>
+
+          {/* Right section with search and notifications */}
+          <div className="flex items-center gap-4 ml-auto">
+            {/* Search bar - hidden on mobile, smaller on tablet/desktop */}
+            <div className="hidden md:block relative w-64 lg:w-72">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
+              <Input
+                type="text"
+                placeholder="Search"
+                className="pl-8 w-full [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+              />
+            </div>
+
             <div className="relative cursor-pointer">
               <Bell className="h-6 w-6 text-gray-600" />
               {notifications > 0 && (
@@ -114,6 +121,20 @@ export default function Header() {
                 </div>
               </PopoverContent>
             </Popover>
+          </div>
+        </div>
+
+        {/* Mobile search bar - only shown when menu is open */}
+        <div className={`md:hidden ${sidebarOpen ? 'block' : 'hidden'} px-4 pb-4`}>
+          <div className="relative">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
+            <Input
+              type="text"
+              placeholder="Search"
+              className="pl-8 w-full [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
+            />
           </div>
         </div>
       </header>

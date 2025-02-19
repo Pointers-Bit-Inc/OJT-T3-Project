@@ -1,16 +1,28 @@
 // /components/jtechcomponents/sidebar.tsx
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart, Home, ShoppingCart } from "lucide-react";
+import { useEffect, useState } from "react";
 import { cn } from "~/lib/utils";
+import { BarChart, Home, ShoppingCart } from "lucide-react";
 
 const menuItems = [
-  { name: "Dashboard", href: "/dashboard", icon: Home },
-  { name: "Products", href: "/dashboard/product", icon: ShoppingCart },
-  { name: "Report", href: "/dashboard/report", icon: BarChart },
+  {
+    name: "Dashboard",
+    href: "/dashboard",
+    icon: <Home className="h-5 w-5" />,
+  },
+  {
+    name: "Products",
+    href: "/dashboard/product",
+    icon: <ShoppingCart className="h-5 w-5" />,
+  },
+  {
+    name: "Report",
+    href: "/dashboard/report",
+    icon: <BarChart className="h-5 w-5" />,
+  },
 ];
 
 export default function Sidebar() {
@@ -41,16 +53,9 @@ export default function Sidebar() {
 
   return (
     <aside className="fixed left-0 top-0 hidden h-screen w-64 flex-col bg-white p-6 md:flex">
-      {/* Logo Section */}
-      <div className="mb-6 flex items-center justify-center">
-        <h2 className="text-lg font-bold text-gray-700 md:text-xl">
-          JTechShafey
-        </h2>
-      </div>
-
       {/* Navigation */}
-      <nav className="flex flex-col space-y-2">
-        {filteredItems.map(({ name, href, icon: Icon }) => {
+      <nav className="flex flex-col space-y-2 mt-16">
+        {filteredItems.map(({ name, href, icon }) => {
           const isActive = pathname === href;
 
           return (
@@ -65,7 +70,7 @@ export default function Sidebar() {
               )}
               aria-current={isActive ? "page" : undefined}
             >
-              <Icon className="h-5 w-5" />
+              {icon}
               <span>{name}</span>
             </Link>
           );
