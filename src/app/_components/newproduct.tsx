@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { Pencil, Trash2 } from "lucide-react"; // Import icons from Lucide
+import { Pencil, Trash2, Check, X } from "lucide-react"; // Import icons from Lucide
 import { Label } from "recharts";
 import { Loader2 } from "lucide-react";
 import { toast, Toaster } from "sonner";
@@ -89,9 +89,12 @@ const ProductModal = ({
       await utils.product.invalidate();
       setIsSubmitting(false);
       toast(
-        <div className="flex items-center w-full">
+        <div className="flex items-center w-full group">
+          <div className="rounded-full bg-green-500 p-1 mr-2">
+            <Check className="h-4 w-4 text-white" />
+          </div>
           <span className="text-black flex-1">Product created successfully!</span>
-          <button onClick={() => toast.dismiss()} className="text-black hover:text-gray-700 ml-8">
+          <button onClick={() => toast.dismiss()} className="text-black hover:text-gray-700 ml-8 opacity-0 group-hover:opacity-100 transition-opacity">
             ✕
           </button>
         </div>
@@ -102,9 +105,12 @@ const ProductModal = ({
     onError: (error) => {
       setIsSubmitting(false);
       toast(
-        <div className="flex items-center w-full">
+        <div className="flex items-center w-full group">
+          <div className="rounded-full bg-red-500 p-1 mr-2">
+            <X className="h-4 w-4 text-white" />
+          </div>
           <span className="text-black flex-1">{error.message}</span>
-          <button onClick={() => toast.dismiss()} className="text-black hover:text-gray-700 ml-8">
+          <button onClick={() => toast.dismiss()} className="text-black hover:text-gray-700 ml-8 opacity-0 group-hover:opacity-100 transition-opacity">
             ✕
           </button>
         </div>
@@ -118,9 +124,12 @@ const ProductModal = ({
       await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
       setIsSubmitting(false);
       toast(
-        <div className="flex items-center w-full">
-          <span className="text-black flex-1">Successfully Updated</span>
-          <button onClick={() => toast.dismiss()} className="text-black hover:text-gray-700 ml-8">
+        <div className="flex items-center w-full group">
+          <div className="rounded-full bg-green-500 p-1 mr-2">
+            <Check className="h-4 w-4 text-white" />
+          </div>
+          <span className="text-black flex-1">Successfully Updated.</span>
+          <button onClick={() => toast.dismiss()} className="text-black hover:text-gray-700 ml-8 opacity-0 group-hover:opacity-100 transition-opacity">
             ✕
           </button>
         </div>
@@ -131,9 +140,12 @@ const ProductModal = ({
     onError: (error) => {
       setIsSubmitting(false);
       toast(
-        <div className="flex items-center w-full">
+        <div className="flex items-center w-full group">
+          <div className="rounded-full bg-red-500 p-1 mr-2">
+            <X className="h-4 w-4 text-white" />
+          </div>
           <span className="text-black flex-1">{error.message}</span>
-          <button onClick={() => toast.dismiss()} className="text-black hover:text-gray-700 ml-8">
+          <button onClick={() => toast.dismiss()} className="text-black hover:text-gray-700 ml-8 opacity-0 group-hover:opacity-100 transition-opacity">
             ✕
           </button>
         </div>
@@ -269,7 +281,7 @@ export const NewProductManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editMode, setEditMode] = useState<EditMode>(null);
   const [editData, setEditData] = useState<Product | null>(null);
-  const [deleteData, setDeleteData] = useState<Product | null>(null);
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -290,16 +302,31 @@ export const NewProductManagement = () => {
   const deleteProduct = api.product.delete.useMutation({
     onSuccess: async () => {
       await utils.product.invalidate();
-      toast(
-        <div className="flex items-center w-full">
-          <span className="text-black flex-1">Successfully Deleted</span>
-          <button onClick={() => toast.dismiss()} className="text-black hover:text-gray-700 ml-8">
-            ✕
-          </button>
-        </div>
-      );
     },
   });
+
+  const handleDelete = async (product: Product) => {
+    setProductToDelete(product);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!productToDelete) return;
+    
+    setIsDeleteDialogOpen(false);
+    toast(
+      <div className="flex items-center w-full group">
+        <div className="rounded-full bg-green-500 p-1 mr-2">
+          <Check className="h-4 w-4 text-white" />
+        </div>
+        <span className="text-black flex-1">Successfully Deleted.</span>
+        <button onClick={() => toast.dismiss()} className="text-black hover:text-gray-700 ml-8 opacity-0 group-hover:opacity-100 transition-opacity">
+          ✕
+        </button>
+      </div>
+    );
+    await deleteProduct.mutateAsync({ id: productToDelete.id });
+  };
 
   // Get current products for pagination
   const getCurrentProducts = () => {
@@ -484,10 +511,7 @@ export const NewProductManagement = () => {
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => {
-                        setDeleteData(product);
-                        setIsDeleteDialogOpen(true);
-                      }}
+                      onClick={() => handleDelete(product)}
                       className="rounded-md border border-red-500 bg-red-100 p-2 text-red-500 hover:bg-red-200"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -574,7 +598,7 @@ export const NewProductManagement = () => {
           <DialogHeader>
             <DialogTitle>Delete Product</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete &quot;{deleteData?.name}&quot;?
+              Are you sure you want to delete &quot;{productToDelete?.name}&quot;?
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -586,13 +610,7 @@ export const NewProductManagement = () => {
             </Button>
             <Button
               variant="destructive"
-              onClick={() => {
-                if (deleteData) {
-                  deleteProduct.mutate({ id: String(deleteData.id) });
-                  setIsDeleteDialogOpen(false);
-                  setDeleteData(null);
-                }
-              }}
+              onClick={confirmDelete}
             >
               Delete
             </Button>

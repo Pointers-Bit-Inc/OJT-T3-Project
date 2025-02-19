@@ -3,18 +3,17 @@ import { GeistSans } from "geist/font/sans";
 import { Metadata } from "next";
 import Sidebar from "~/components/jtechcomponents/sidebar";
 import Header from "./Header";
+import { Footer } from "~/components/jtechcomponents/Footer";
 
 export const metadata: Metadata = {
   title: "JTechShafey",
-  description: "Generated",
+  description: "Inventory Management System",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
 export default function DashboardLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body className="flex h-screen bg-gray-100">
@@ -28,7 +27,9 @@ export default function DashboardLayout({
           {/* Header */}
           <Header />
 
-          <main className="flex-1 overflow-auto p-6">{children}</main>
+          {/* Main Content with padding for header */}
+          <main className="flex-1 overflow-auto p-6 pb-20 mt-16">{children}</main>
+          <Footer />
         </div>
       </body>
     </html>
